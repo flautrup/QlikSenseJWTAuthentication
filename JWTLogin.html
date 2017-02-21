@@ -2,12 +2,12 @@
 
 <head>
     <script>
-        //Fetch JWT token for user
+       //Setup for sending requests
         var xhrGetToken = new XMLHttpRequest();
         var xhrGetSession = new XMLHttpRequest();
         xhrGetSession.withCredentials = true;
 
-
+        //Get token from enpoint
         const getToken = () => {
             return new Promise((resolv, reject) => {
                 xhrGetToken.onload = function (ev) {
@@ -20,7 +20,7 @@
             })
         }
 
-
+        //Get session from Qlik Sense
         const getSession = (token) => {
             return new Promise((resolv, reject) => {
                 //Use token to get a session
@@ -38,12 +38,13 @@
             })
         }
 
-        //Redirect to content
+        //Redirect to hub (delay added to let prefligt request finish)
         const loadQlikSense = () => {
             setInterval(() => {window.location.replace('https://localhost/jwt/hub');},1000);
             
         }
 
+        // Get JWT token, use JWT to get session, redirect to hub
         getToken().then((token) => {
             getSession(token).then(loadQlikSense());
         })

@@ -1,3 +1,22 @@
+/*
+============================================================================================
+File: JWTTest.js
+Developer: Fredrik Lautrup
+Created Date: Feb 2017
+Description:
+Node script to run from command line to test out Qlik Sense Proxy JWT support
+WARNING!:
+This code is intended for testing and demonstration purposes only.  It is not meant for
+production environments.  In addition, the code is not supported by Qlik.
+Change Log
+Developer                       Change Description                          Modify Date
+--------------------------------------------------------------------------------------------
+Fredrik Lautrup                 Initial Release                             Feb 2017
+--------------------------------------------------------------------------------------------
+============================================================================================
+*/
+
+
 // Load modules needed
 var jwt = require('jsonwebtoken');
 var fs = require('fs');
