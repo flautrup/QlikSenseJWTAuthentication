@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <script>
+        //Fetch JWT token for user
+        var xhrGetToken = new XMLHttpRequest();
+        var xhrGetSession = new XMLHttpRequest();
+        xhrGetSession.withCredentials = true;
+
+
+        const getToken = () => {
+            return new Promise((resolv, reject) => {
+                xhrGetToken.onload = function (ev) {
+                    var answer = JSON.parse(xhrGetToken.responseText);
+                    console.log(answer);
+                    resolv(answer.token);
+                }
+                xhrGetToken.open('GET', 'https://localhost:8185/jwt');
+                xhrGetToken.send();
+            })
+        }
+
+
+        const getSession = (token) => {
+            return new Promise((resolv, reject) => {
+                //Use token to get a session
+
+                xhrGetSession.onload = function (ev) {
+                    var answer = JSON.parse(xhrGetSession.responseText);
+                    console.log(answer);
+                    resolv();
+                }
+
+                xhrGetSession.open('GET', 'https://localhost/jwt/qrs/about?xrfkey=aaaaaaaaaaaaaaaa');
+                xhrGetSession.setRequestHeader('Authorization', 'Bearer ' + token);
+                xhrGetSession.setRequestHeader('X-qlik-xrfkey', 'aaaaaaaaaaaaaaaa');
+                xhrGetSession.send();
+            })
+        }
+
+        //Redirect to content
+        const loadQlikSense = () => {
+            setInterval(() => {window.location.replace('https://localhost/jwt/hub');},1000);
+            
+        }
+
+        getToken().then((token) => {
+            getSession(token).then(loadQlikSense());
+        })
+    </script>
+</head>
+
+<body>
+    <h1>Logging in</h1>
+</body>
+
+</html>
