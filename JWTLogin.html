@@ -2,7 +2,7 @@
 
 <head>
     <script>
-       //Setup for sending requests
+        //Setup for sending requests
         var xhrGetToken = new XMLHttpRequest();
         var xhrGetSession = new XMLHttpRequest();
         xhrGetSession.withCredentials = true;
@@ -40,8 +40,10 @@
 
         //Redirect to hub (delay added to let prefligt request finish)
         const loadQlikSense = () => {
-            setInterval(() => {window.location.replace('https://localhost/jwt/hub');},1000);
-            
+            setInterval(() => {
+                window.location.replace('https://localhost/jwt/hub');
+            }, 1000);
+
         }
 
         // Get JWT token, use JWT to get session, redirect to hub

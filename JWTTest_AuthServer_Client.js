@@ -37,7 +37,9 @@ var app = express();
 app.set('port', 8185);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 //Return the JS to login
 app.get('/login', function (req, res) {
@@ -47,7 +49,9 @@ app.get('/login', function (req, res) {
 //Returns a JWT in a JSON structure
 app.get('/jwt', function (req, res) {
     var token = getToken();
-    JSONreponse={ 'token': token };
+    JSONreponse = {
+        'token': token
+    };
     res.setHeader('content-type', 'application/json');
     res.send(JSONreponse);
 });
@@ -55,10 +59,16 @@ app.get('/jwt', function (req, res) {
 //Create JWT Token
 const getToken = () => {
     // sign with RSA SHA256
-    var key = fs.readFileSync('key.pem');  // get private key
+    var key = fs.readFileSync('key.pem'); // get private key
     //Create a JWT for subject jwtflp in JWTgroup finance signed with the private key using RS256 as algorithm
     // valid for 5 seconds
-    var token = jwt.sign({ JWTgroup: 'Finance' }, key, { algorithm: 'RS256', subject: 'jwtflp', expiresIn: '5s' });
+    var token = jwt.sign({
+        JWTgroup: 'Finance'
+    }, key, {
+        algorithm: 'RS256',
+        subject: 'jwtflp',
+        expiresIn: '5s'
+    });
 
     console.log("\nJWT Token\n")
     console.log(token);

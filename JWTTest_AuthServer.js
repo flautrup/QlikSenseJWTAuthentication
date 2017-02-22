@@ -35,13 +35,15 @@ var app = express();
 app.set('port', 8185);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 //Define endpoint for login using JWT
 app.get('/login', function (req, res) {
     var token = getToken();
     reqWithToken(token).then((response) => {
-        res.setHeader('set-cookie',response); //Respond with cookie collected using JWT
+        res.setHeader('set-cookie', response); //Respond with cookie collected using JWT
         res.status(200).send("Login");
     })
 });
@@ -49,10 +51,16 @@ app.get('/login', function (req, res) {
 //Create JWT Token
 const getToken = () => {
     // sign with RSA SHA256
-    var key = fs.readFileSync('key.pem');  // get private key
+    var key = fs.readFileSync('key.pem'); // get private key
     //Create a JWT for subject jwtflp in JWTgroup finance signed with the private key using RS256 as algorithm
     //valid in 5 seconds
-    var token = jwt.sign({ JWTgroup: 'Finance' }, key, { algorithm: 'RS256', subject: 'jwtflp', expiresIn: '5s' });
+    var token = jwt.sign({
+        JWTgroup: 'Finance'
+    }, key, {
+        algorithm: 'RS256',
+        subject: 'jwtflp',
+        expiresIn: '5s'
+    });
 
     console.log("\nJWT Token\n")
     console.log(token);
@@ -69,7 +77,11 @@ const reqWithToken = (token) => {
             port: 443,
             path: '/jwt/qrs/about?xrfkey=aaaaaaaaaaaaaaaa', //Request the about information
             method: 'GET',
-            headers: { 'X-qlik-xrfkey': 'aaaaaaaaaaaaaaaa', 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, //CSRF token and JWT added to header
+            headers: {
+                'X-qlik-xrfkey': 'aaaaaaaaaaaaaaaa',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            }, //CSRF token and JWT added to header
             rejectUnauthorized: false //Don't verify Qlik Sense certificate
         };
 
@@ -89,7 +101,7 @@ const reqWithToken = (token) => {
         });
 
         console.log("\nRequest Authorization header\n");
-        console.log('Authorization: '+req.getHeader('Authorization'));
+        console.log('Authorization: ' + req.getHeader('Authorization'));
 
         req.on('error', (e) => {
             console.error(e);

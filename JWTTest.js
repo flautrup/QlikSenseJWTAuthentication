@@ -21,12 +21,17 @@ Fredrik Lautrup                 Initial Release                             Feb 
 var jwt = require('jsonwebtoken');
 var fs = require('fs');
 var https = require('https');
-var express=require('express');
+var express = require('express');
 
 // sign with RSA SHA256
-var key = fs.readFileSync('key.pem');  // get private key
+var key = fs.readFileSync('key.pem'); // get private key
 //Create a JWT for subject jwtflp in JWTgroup finance signed with the private key using RS256 as algorithm
-var token = jwt.sign({ JWTgroup: 'Finance' }, key, { algorithm: 'RS256', subject: 'jwtflp' });
+var token = jwt.sign({
+  JWTgroup: 'Finance'
+}, key, {
+  algorithm: 'RS256',
+  subject: 'jwtflp'
+});
 
 console.log("\nJWT Token\n")
 console.log(token);
@@ -44,7 +49,11 @@ var options = {
   port: 443,
   path: '/jwt/qrs/about?xrfkey=aaaaaaaaaaaaaaaa', //Request the about information
   method: 'GET',
-  headers: { 'X-qlik-xrfkey': 'aaaaaaaaaaaaaaaa', 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, //CSRF token and JWT added to header
+  headers: {
+    'X-qlik-xrfkey': 'aaaaaaaaaaaaaaaa',
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + token
+  }, //CSRF token and JWT added to header
   rejectUnauthorized: false //Don't verify Qlik Sense certificate
 };
 
@@ -60,11 +69,10 @@ var req = https.request(options, (res) => {
   });
 });
 
-    console.log("\nRequest Authorization header\n");
-    console.log(req.getHeader('Authorization'));
+console.log("\nRequest Authorization header\n");
+console.log(req.getHeader('Authorization'));
 
 req.on('error', (e) => {
   console.error(e);
 });
 req.end();
-
